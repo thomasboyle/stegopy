@@ -36,7 +36,7 @@ The desktop application will launch with drag-and-drop support for embedding and
 Requirements: Python 3.8+
 
 ```bash
-git clone <repository>
+git clone https://github.com/thomasboyle/stegopy.git
 cd stegosuite
 pip install -r requirements.txt
 ```
