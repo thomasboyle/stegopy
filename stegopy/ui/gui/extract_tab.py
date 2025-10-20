@@ -14,9 +14,9 @@ from PyQt6.QtGui import QDragEnterEvent, QDropEvent
 import os
 import traceback
 
-from stegosuite.core import load_image, LSBEmbedding, PVDEmbedding, DCTEmbedding, NoFilter
-from stegosuite.config import DEFAULT_EMBEDDING_METHOD
-from stegosuite.util import image_utils
+from stegopy.core import load_image, LSBEmbedding, PVDEmbedding, DCTEmbedding, NoFilter
+from stegopy.config import DEFAULT_EMBEDDING_METHOD
+from stegopy.util import image_utils
 from .widgets import ProgressPanel
 
 

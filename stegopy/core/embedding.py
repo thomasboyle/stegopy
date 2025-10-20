@@ -7,9 +7,9 @@ Defines interface for different embedding methods.
 from abc import ABC, abstractmethod
 from typing import Callable, Optional
 
-from stegosuite.core.payload import Payload
-from stegosuite.core.image_format import ImageFormat
-from stegosuite.core.point_filter import PointFilter, NoFilter
+from stegopy.core.payload import Payload
+from stegopy.core.image_format import ImageFormat
+from stegopy.core.point_filter import PointFilter, NoFilter
 
 
 class EmbeddingMethod(ABC):

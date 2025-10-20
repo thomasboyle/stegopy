@@ -7,8 +7,8 @@ import tempfile
 import os
 from pathlib import Path
 
-from stegosuite.core import Payload, MessageBlock, FileBlock
-from stegosuite.util import crypto, compression, byte_utils
+from stegopy.core import Payload, MessageBlock, FileBlock
+from stegopy.util import crypto, compression, byte_utils
 
 
 class TestCrypto:
@@ -154,7 +154,7 @@ class TestImageExtraction:
         assert image_path.exists(), f"Image not found at {image_path}"
         
         # Load image
-        from stegosuite.core import load_image, PVDEmbedding
+        from stegopy.core import load_image, PVDEmbedding
         image = load_image(str(image_path))
         
         # Extract using PVD method (PNG uses PVD by default)
@@ -189,7 +189,7 @@ class TestImageExtraction:
     def test_extract_from_steno_test_png_with_password(self):
         """Test extracting message from steno_test.png with different passwords."""
         from pathlib import Path
-        from stegosuite.core import load_image, PVDEmbedding
+        from stegopy.core import load_image, PVDEmbedding
         
         image_path = Path(__file__).parent.parent / "steno_test.png"
         
@@ -229,7 +229,7 @@ class TestImageExtraction:
     def test_extract_debug_raw_bits(self):
         """Debug test to see raw extracted bits."""
         from pathlib import Path
-        from stegosuite.core import load_image, PVDEmbedding
+        from stegopy.core import load_image, PVDEmbedding
         import numpy as np
         
         image_path = Path(__file__).parent.parent / "steno_test.png"
@@ -265,7 +265,7 @@ class TestImageExtraction:
         
         # Convert first few bytes
         if len(extracted_bits) >= 24:
-            from stegosuite.util import byte_utils
+            from stegopy.util import byte_utils
             for i in range(0, min(24, len(extracted_bits) - 7), 8):
                 byte_bits = extracted_bits[i : i + 8]
                 byte_val = byte_utils.bits_to_byte(byte_bits)
@@ -274,8 +274,8 @@ class TestImageExtraction:
     def test_extract_all_raw_bits(self):
         """Extract and examine all raw bits from the image."""
         from pathlib import Path
-        from stegosuite.core import load_image, PVDEmbedding
-        from stegosuite.util import byte_utils
+        from stegopy.core import load_image, PVDEmbedding
+        from stegopy.util import byte_utils
         
         image_path = Path(__file__).parent.parent / "steno_test.png"
         
@@ -336,8 +336,8 @@ class TestImageExtraction:
     def test_extract_and_decompress_manually(self):
         """Manually extract, decompress, and unpack the payload."""
         from pathlib import Path
-        from stegosuite.core import load_image, PVDEmbedding
-        from stegosuite.util import byte_utils, compression
+        from stegopy.core import load_image, PVDEmbedding
+        from stegopy.util import byte_utils, compression
         import zlib
         
         image_path = Path(__file__).parent.parent / "steno_test.png"
@@ -420,8 +420,8 @@ class TestImageExtraction:
     def test_try_bit_reverse_within_bytes(self):
         """Try reversing bits within each byte."""
         from pathlib import Path
-        from stegosuite.core import load_image, PVDEmbedding
-        from stegosuite.util import byte_utils
+        from stegopy.core import load_image, PVDEmbedding
+        from stegopy.util import byte_utils
         import zlib
         
         image_path = Path(__file__).parent.parent / "steno_test.png"
@@ -478,7 +478,7 @@ class TestImageExtraction:
             print(f"Decompressed repr: {repr(decompressed)}")
             
             # Try to unpack
-            from stegosuite.core import Payload
+            from stegopy.core import Payload
             blocks, _ = Payload.unpack_and_extract(extracted_data_rev, "")
             print(f"Unpacked blocks: {blocks}")
             for block_type, content in blocks:
@@ -493,7 +493,7 @@ class TestImageExtraction:
         from PIL import Image
         import numpy as np
         
-        from stegosuite.core import load_image, Payload, PVDEmbedding
+        from stegopy.core import load_image, Payload, PVDEmbedding
         
         # Create a simple test image (all white)
         img_array = np.ones((100, 100, 3), dtype=np.uint8) * 200
@@ -547,7 +547,7 @@ class TestImageExtraction:
         from PIL import Image
         import numpy as np
 
-        from stegosuite.core import load_image, Payload, PVDEmbedding
+        from stegopy.core import load_image, Payload, PVDEmbedding
 
         # Create a fresh test image (same as the working roundtrip test)
         img_array = np.ones((100, 100, 3), dtype=np.uint8) * 200

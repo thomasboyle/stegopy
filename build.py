@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Build script for Stegosuite executable.
+Build script for Stegopy executable.
 This script uses PyInstaller to create a standalone executable.
 """
 
@@ -28,11 +28,11 @@ def build_executable():
         sys.executable, '-m', 'PyInstaller',
         '--onefile',
         '--windowed',
-        '--icon=stegosuite/icon_embed.jpg',
-        '--name=Stegosuite',
-        '--add-data=stegosuite/ui/gui;stegosuite/ui/gui',
-        '--add-data=stegosuite/config;stegosuite/config',
-        '--add-data=stegosuite/icon_embed.jpg;.',
+        '--icon=stegopy/icon_embed.jpg',
+        '--name=Stegopy',
+        '--add-data=stegopy/ui/gui;stegopy/ui/gui',
+        '--add-data=stegopy/config;stegopy/config',
+        '--add-data=stegopy/icon_embed.jpg;.',
         '--hidden-import=PyQt6.QtCore',
         '--hidden-import=PyQt6.QtGui',
         '--hidden-import=PyQt6.QtWidgets',
@@ -48,7 +48,7 @@ def build_executable():
         '--exclude-module=matplotlib',
         '--exclude-module=pandas',
         '--distpath=dist',
-        'stegosuite/main.py'
+        'stegopy/main.py'
     ]
     
     try:
@@ -65,7 +65,7 @@ def create_distribution_package():
     print("\nCreating distribution package...")
     
     dist_path = Path('dist')
-    package_path = Path('stegosuite_release')
+    package_path = Path('stegopy_release')
     
     if package_path.exists():
         shutil.rmtree(package_path)
@@ -73,7 +73,7 @@ def create_distribution_package():
     package_path.mkdir()
     
     # Copy executable
-    exe_name = 'Stegosuite.exe' if sys.platform == 'win32' else 'Stegosuite'
+    exe_name = 'Stegopy.exe' if sys.platform == 'win32' else 'Stegopy'
     exe_src = dist_path / exe_name
     exe_dst = package_path / exe_name
     
@@ -91,9 +91,9 @@ def create_distribution_package():
     
     # Create a simple launch script for Windows
     if sys.platform == 'win32':
-        batch_script = package_path / 'run_stegosuite.bat'
-        batch_script.write_text('@echo off\nSTART "" Stegosuite.exe %*\n')
-        print("  Created run_stegosuite.bat launcher")
+        batch_script = package_path / 'run_stegopy.bat'
+        batch_script.write_text('@echo off\nSTART "" Stegopy.exe %*\n')
+        print("  Created run_stegopy.bat launcher")
     
     print(f"\nDistribution package created in: {package_path.absolute()}")
     return package_path
@@ -110,12 +110,12 @@ def create_installer():
 def main():
     """Main build process."""
     print("=" * 60)
-    print("Stegosuite Build Script")
+    print("Stegopy Build Script")
     print("=" * 60)
     
     # Check if we're in the right directory
-    if not os.path.exists('stegosuite/main.py'):
-        print("Error: stegosuite/main.py not found. Are you in the right directory?")
+    if not os.path.exists('stegopy/main.py'):
+        print("Error: stegopy/main.py not found. Are you in the right directory?")
         sys.exit(1)
     
     # Check dependencies
@@ -139,7 +139,7 @@ def main():
     
     print("\n" + "=" * 60)
     print("Build Summary:")
-    print(f"  Executable: dist/Stegosuite.exe")
+    print(f"  Executable: dist/Stegopy.exe")
     print(f"  Package: {package_path}")
     print("=" * 60)
     print("\nTo share the application:")

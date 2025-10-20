@@ -7,12 +7,12 @@ Implements PVD embedding for BMP, GIF, and PNG formats.
 import numpy as np
 from typing import List, Tuple
 
-from stegosuite.core.embedding import EmbeddingMethod
-from stegosuite.core.payload import Payload
-from stegosuite.core.image_format import ImageFormat
-from stegosuite.core.point_filter import PointFilter, NoFilter
-from stegosuite.util import byte_utils
-from stegosuite.config.constants import PVD_RANGES
+from stegopy.core.embedding import EmbeddingMethod
+from stegopy.core.payload import Payload
+from stegopy.core.image_format import ImageFormat
+from stegopy.core.point_filter import PointFilter, NoFilter
+from stegopy.util import byte_utils
+from stegopy.config.constants import PVD_RANGES
 
 
 class PVDEmbedding(EmbeddingMethod):

@@ -16,7 +16,7 @@ project_root = Path(__file__).parent
 import sys
 sys.path.insert(0, str(project_root))
 
-from stegosuite.core import load_image, Payload, LSBEmbedding
+from stegopy.core import load_image, Payload, LSBEmbedding
 
 
 def create_test_image(width=800, height=600, pattern="noise"):

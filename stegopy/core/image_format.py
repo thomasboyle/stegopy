@@ -11,7 +11,7 @@ from typing import Optional
 from PIL import Image
 import numpy as np
 
-from stegosuite.util import image_utils
+from stegopy.util import image_utils
 
 
 class ImageFormat(ABC):

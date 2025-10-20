@@ -9,7 +9,7 @@ from typing import List, Tuple
 
 import numpy as np
 
-from stegosuite.util import color_utils
+from stegopy.util import color_utils
 
 
 class PointFilter(ABC):

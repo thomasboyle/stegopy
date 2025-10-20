@@ -1,4 +1,4 @@
-# STEGOSUITE
+# STEGOPY
 
 Modern steganography suite for hiding data in images with GPU-accelerated encoding/decoding.
 
@@ -8,7 +8,7 @@ Install dependencies and run:
 
 ```bash
 pip install -r requirements.txt
-python -m stegosuite.main
+python -m stegopy.main
 ```
 
 The desktop application will launch with drag-and-drop support for embedding and extracting hidden data.
@@ -37,7 +37,7 @@ Requirements: Python 3.8+
 
 ```bash
 git clone https://github.com/thomasboyle/stegopy.git
-cd stegosuite
+cd stegopy
 pip install -r requirements.txt
 ```
 

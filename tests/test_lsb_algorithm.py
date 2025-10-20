@@ -11,8 +11,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from stegosuite.core import Payload, LSBEmbedding, load_image
-from stegosuite.core.image_format import BMPImage, GIFImage, JPGImage, PNGImage
+from stegopy.core import Payload, LSBEmbedding, load_image
+from stegopy.core.image_format import BMPImage, GIFImage, JPGImage, PNGImage
 
 
 class TestLSBEmbedding:

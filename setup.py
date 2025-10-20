@@ -1,4 +1,4 @@
-"""Setup configuration for Stegosuite."""
+"""Setup configuration for Stegopy."""
 
 from setuptools import setup, find_packages
 
@@ -6,13 +6,13 @@ with open("README.txt", "r", encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name="stegosuite",
+    name="stegopy",
     version="0.9.0",
-    author="Stegosuite Contributors",
+    author="Stegopy Contributors",
     description="Modern Steganography Suite - Hide information in image files",
     long_description=long_description,
     long_description_content_type="text/plain",
-    url="https://dev.stegosuite.org/stegosuite/stegosuite",
+    url="https://dev.stegopy.org/stegopy/stegopy",
     license="GNU General Public License v3",
     packages=find_packages(),
     python_requires=">=3.8",
@@ -34,7 +34,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "stegosuite=stegosuite.main:main",
+            "stegopy=stegopy.main:main",
         ],
     },
     classifiers=[

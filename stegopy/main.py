@@ -1,5 +1,5 @@
 """
-Main entry point for Stegosuite application.
+Main entry point for Stegopy application.
 
 Launches the PyQt6 GUI.
 """
@@ -8,7 +8,7 @@ import sys
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtGui import QPalette, QColor
 
-from stegosuite.ui.gui import MainWindow, styles
+from stegopy.ui.gui import MainWindow, styles
 
 
 def main():

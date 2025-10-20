@@ -17,7 +17,7 @@ Issues Fixed:
 1. LSB extraction bug: max_bits was hardcoded to 100000 bits (12500 bytes)
    - This prevented extraction of files larger than ~12KB
    - FIXED: Removed the arbitrary limit, now extracts full file capacity
-   - File: stegosuite/core/lsb_embedding.py, line 119
+   - File: stegopy/core/lsb_embedding.py, line 119
 
 Known Issues & Limitations:
 ---------------------------
@@ -65,8 +65,8 @@ import pytest
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from stegosuite.core import load_image, Payload, PVDEmbedding, LSBEmbedding
-from stegosuite.util import image_utils, byte_utils
+from stegopy.core import load_image, Payload, PVDEmbedding, LSBEmbedding
+from stegopy.util import image_utils, byte_utils
 
 
 class TestFileEmbedding:
@@ -517,7 +517,7 @@ class TestFileEmbedding:
             
             # Try to parse the header
             if len(extracted_data_raw) >= 3:
-                from stegosuite.util import byte_utils as bu
+                from stegopy.util import byte_utils as bu
                 payload_len = bu.bytes_to_int(bytes(extracted_data_raw[:3]))
                 print(f"\n[6] Payload length analysis:")
                 print(f"  Expected payload length: {len(prepared) - 3} bytes")

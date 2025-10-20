@@ -8,12 +8,12 @@ import numpy as np
 from typing import List, Tuple
 from scipy import fftpack
 
-from stegosuite.core.embedding import EmbeddingMethod
-from stegosuite.core.payload import Payload
-from stegosuite.core.image_format import ImageFormat, JPGImage
-from stegosuite.core.point_filter import PointFilter, NoFilter
-from stegosuite.util import byte_utils
-from stegosuite.config.constants import DCT_BLOCK_SIZE
+from stegopy.core.embedding import EmbeddingMethod
+from stegopy.core.payload import Payload
+from stegopy.core.image_format import ImageFormat, JPGImage
+from stegopy.core.point_filter import PointFilter, NoFilter
+from stegopy.util import byte_utils
+from stegopy.config.constants import DCT_BLOCK_SIZE
 
 
 class DCTEmbedding(EmbeddingMethod):

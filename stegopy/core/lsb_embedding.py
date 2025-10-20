@@ -1,5 +1,5 @@
 """
-Modern LSB (Least Significant Bit) embedding for Stegosuite.
+Modern LSB (Least Significant Bit) embedding for Stegopy.
 
 Implements a secure LSB-based algorithm that supports all image formats.
 Uses pseudo-random pixel selection and multi-bit embedding for improved security.
@@ -9,12 +9,12 @@ import numpy as np
 from typing import List, Tuple, Optional
 import hashlib
 
-from stegosuite.core.embedding import EmbeddingMethod
-from stegosuite.core.payload import Payload
-from stegosuite.core.image_format import ImageFormat
-from stegosuite.core.point_filter import PointFilter, NoFilter
-from stegosuite.core.gpu_accelerator import get_accelerator
-from stegosuite.util import byte_utils
+from stegopy.core.embedding import EmbeddingMethod
+from stegopy.core.payload import Payload
+from stegopy.core.image_format import ImageFormat
+from stegopy.core.point_filter import PointFilter, NoFilter
+from stegopy.core.gpu_accelerator import get_accelerator
+from stegopy.util import byte_utils
 
 
 class LSBEmbedding(EmbeddingMethod):

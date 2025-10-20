@@ -1,5 +1,5 @@
 """
-Main window for Stegosuite GUI.
+Main window for Stegopy GUI.
 
 Implements the main application window with tabbed interface for embed, extract, and settings.
 """
@@ -14,8 +14,8 @@ from pathlib import Path
 import os
 import threading
 
-from stegosuite.core import load_image, Payload, PVDEmbedding, DCTEmbedding
-from stegosuite.util import image_utils
+from stegopy.core import load_image, Payload, PVDEmbedding, DCTEmbedding
+from stegopy.util import image_utils
 from .widgets import CapacityIndicator, FileList, ProgressPanel
 from .embed_tab import EmbedTab
 from .extract_tab import ExtractTab
@@ -26,7 +26,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Stegosuite - Modern Steganography Suite")
+        self.setWindowTitle("Stegopy - Modern Steganography Suite")
         self.setSize(900, 700)
         self.init_ui()
 
@@ -44,7 +44,7 @@ class MainWindow(QMainWindow):
         layout.setSpacing(15)
 
         # Title
-        title = QLabel("Stegosuite")
+        title = QLabel("Stegopy")
         title.setProperty("class", "title")
         layout.addWidget(title)
 

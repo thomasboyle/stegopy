@@ -17,7 +17,7 @@ from PIL import Image
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from stegosuite.core import load_image, Payload, LSBEmbedding
+from stegopy.core import load_image, Payload, LSBEmbedding
 
 
 def create_test_image(width=300, height=300, pattern="gradient"):

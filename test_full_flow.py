@@ -21,11 +21,11 @@ from PIL import Image
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from stegosuite.core.image_format import load_image
-from stegosuite.core.payload import Payload
-from stegosuite.core.pvd_embedding import PVDEmbedding
-from stegosuite.core.dct_embedding import DCTEmbedding
-from stegosuite.util import image_utils
+from stegopy.core.image_format import load_image
+from stegopy.core.payload import Payload
+from stegopy.core.pvd_embedding import PVDEmbedding
+from stegopy.core.dct_embedding import DCTEmbedding
+from stegopy.util import image_utils
 
 
 def create_synthetic_image(width=300, height=300, seed=42):

@@ -7,12 +7,12 @@ Handles serialization of data blocks (messages and files) for embedding.
 import os
 from typing import List, Tuple, Optional
 
-from stegosuite.config.constants import (
+from stegopy.config.constants import (
     PAYLOAD_LENGTH_BYTES,
     BLOCK_TYPE_MESSAGE,
     BLOCK_TYPE_FILE,
 )
-from stegosuite.util import byte_utils, crypto, compression
+from stegopy.util import byte_utils, crypto, compression
 
 
 class Block:

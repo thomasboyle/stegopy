@@ -8,7 +8,7 @@ import os
 from pathlib import Path
 from typing import Optional, Tuple
 
-from stegosuite.config.constants import SUPPORTED_FORMATS
+from stegopy.config.constants import SUPPORTED_FORMATS
 
 
 def detect_format(file_path: str) -> Optional[str]:
