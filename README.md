@@ -1,10 +1,8 @@
-STEGOSUITE
-==========
+# STEGOSUITE
 
 Modern steganography suite for hiding data in images with GPU-accelerated encoding/decoding.
 
-QUICKSTART
-==========
+## QUICKSTART
 
 Install dependencies and run:
 
@@ -15,8 +13,7 @@ python -m stegosuite.main
 
 The desktop application will launch with drag-and-drop support for embedding and extracting hidden data.
 
-FEATURES
-========
+## FEATURES
 
 **GPU-Accelerated Operations**
 - High-performance encode/decode using optimized vectorized operations
@@ -34,8 +31,7 @@ FEATURES
 - Multi-file payloads with automatic compression
 - Smart avoidance of homogeneous image areas
 
-INSTALLATION
-============
+## INSTALLATION
 
 Requirements: Python 3.8+
 
@@ -45,8 +41,7 @@ cd stegosuite
 pip install -r requirements.txt
 ```
 
-USAGE
-=====
+## USAGE
 
 **Embed Data:**
 1. Select carrier image (BMP/GIF/JPG/PNG)
@@ -59,7 +54,6 @@ USAGE
 2. Enter password (if encrypted)
 3. Extract messages and files
 
-LICENSE
-=======
+## LICENSE
 
 GNU General Public License v3
