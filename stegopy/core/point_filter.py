@@ -5,7 +5,6 @@ Filters pixels to avoid embedding in homogeneous (flat) regions of images.
 """
 
 from abc import ABC, abstractmethod
-from typing import List, Tuple
 
 import numpy as np
 
@@ -60,7 +59,7 @@ class HomogeneousFilter(PointFilter):
         self, pixel_data: np.ndarray, x: int, y: int, neighborhood_size: int = 3
     ) -> bool:
         """
-        Check if pixel is in a non-homogeneous region.
+        Check if pixel is in a non-homogeneous region using fast O(n) algorithm.
 
         Skips embedding in flat areas with little color variation.
         """
@@ -73,15 +72,8 @@ class HomogeneousFilter(PointFilter):
         x_start = max(0, x - half)
         x_end = min(width, x + half + 1)
 
-        # Get neighborhood pixels
+        # Get neighborhood as numpy slice (no Python list conversion)
         neighborhood = pixel_data[y_start:y_end, x_start:x_end]
 
-        # Flatten to list of RGB tuples, ensuring proper conversion from NumPy arrays
-        pixels = [
-            tuple(int(c) for c in neighborhood[i, j]) 
-            for i in range(neighborhood.shape[0]) 
-            for j in range(neighborhood.shape[1])
-        ]
-
-        # Check if homogeneous
-        return not color_utils.is_homogeneous(pixels, self.threshold)
+        # Use fast O(n) check instead of O(n^2)
+        return not color_utils.is_homogeneous_fast(neighborhood, self.threshold)

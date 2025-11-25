@@ -67,7 +67,7 @@ class GPUAccelerator:
     def embed_bits_parallel(self, pixels: np.ndarray, bit_data: np.ndarray,
                           pixel_sequence: np.ndarray, bits_per_pixel: int = 1) -> np.ndarray:
         """
-        Embed bits into pixels using fast operations.
+        Embed bits into pixels using true vectorized NumPy operations.
 
         Args:
             pixels: 2D or 3D numpy array of pixel values
@@ -78,54 +78,48 @@ class GPUAccelerator:
         Returns:
             Modified pixels array
         """
-        # Work with flattened pixels for efficiency
         original_shape = pixels.shape
         is_rgb = len(original_shape) == 3
         channels = 3 if is_rgb else 1
 
-        # Create a view instead of copy for memory efficiency
-        pixels_flat = pixels.reshape(-1, channels)
-
-        # Prepare data
+        pixels_flat = pixels.reshape(-1, channels).copy()
         bit_data = np.asarray(bit_data, dtype=np.uint8)
         pixel_sequence = np.asarray(pixel_sequence, dtype=np.int32)
 
-        # Calculate capacity and limit data
-        max_bits = len(pixel_sequence) * channels * bits_per_pixel
-        bit_data = bit_data[:max_bits]
+        # Filter valid pixel indices
+        valid_mask = pixel_sequence < len(pixels_flat)
+        pixel_sequence = pixel_sequence[valid_mask]
 
-        if len(bit_data) == 0:
+        # Calculate how many bits we can embed
+        num_bits = min(len(bit_data), len(pixel_sequence) * channels)
+        if num_bits == 0:
             return pixels
 
-        # Fast bit embedding
-        bit_idx = 0
-        total_bits = len(bit_data)
+        # Calculate full pixels and remainder
+        num_full_pixels = num_bits // channels
+        remainder_bits = num_bits % channels
 
-        for seq_idx in pixel_sequence:
-            if seq_idx >= len(pixels_flat):
-                continue
+        # Vectorized embedding for complete pixels
+        if num_full_pixels > 0:
+            selected_pixels = pixel_sequence[:num_full_pixels]
+            bit_matrix = bit_data[:num_full_pixels * channels].reshape(num_full_pixels, channels)
+            # Clear LSB and set new bit - fully vectorized
+            pixels_flat[selected_pixels] = (pixels_flat[selected_pixels] & 254) | bit_matrix
 
-            for channel in range(channels):
-                if bit_idx >= total_bits:
-                    break
+        # Handle remaining bits for partial pixel
+        if remainder_bits > 0 and num_full_pixels < len(pixel_sequence):
+            last_pixel_idx = pixel_sequence[num_full_pixels]
+            for c in range(remainder_bits):
+                bit_idx = num_full_pixels * channels + c
+                pixels_flat[last_pixel_idx, c] = (pixels_flat[last_pixel_idx, c] & 254) | bit_data[bit_idx]
 
-                # Direct bit embedding - optimized for speed
-                current_value = pixels_flat[seq_idx, channel]
-                bit_to_embed = bit_data[bit_idx]
-                pixels_flat[seq_idx, channel] = (current_value & 254) | bit_to_embed
-                bit_idx += 1
-
-            if bit_idx >= total_bits:
-                break
-
-        # Reshape back to original dimensions
         return pixels_flat.reshape(original_shape)
 
 
     def extract_bits_parallel(self, pixels: np.ndarray, pixel_sequence: np.ndarray,
                             num_bits: int, bits_per_pixel: int = 1) -> np.ndarray:
         """
-        Extract bits from pixels using ultra-fast vectorized operations.
+        Extract bits from pixels using true vectorized NumPy operations.
 
         Args:
             pixels: 2D or 3D numpy array of pixel values
@@ -136,42 +130,40 @@ class GPUAccelerator:
         Returns:
             Array of extracted bits
         """
-        # Work with flattened pixels for efficiency
         original_shape = pixels.shape
         is_rgb = len(original_shape) == 3
         channels = 3 if is_rgb else 1
 
-        # Create a view instead of copy for memory efficiency
         pixels_flat = pixels.reshape(-1, channels)
-
-        # Prepare data
         pixel_sequence = np.asarray(pixel_sequence, dtype=np.int32)
 
-        # Allocate result array
-        extracted_bits = np.zeros(num_bits, dtype=np.uint8)
+        # Filter valid pixel indices
+        valid_mask = pixel_sequence < len(pixels_flat)
+        pixel_sequence = pixel_sequence[valid_mask]
 
-        # Fast bit extraction
-        bit_idx = 0
-        max_bits = len(extracted_bits)
+        # Calculate extraction parameters
+        num_full_pixels = num_bits // channels
+        remainder_bits = num_bits % channels
 
-        for seq_idx in pixel_sequence:
-            if seq_idx >= len(pixels_flat):
-                continue
+        # Limit to available pixels
+        num_full_pixels = min(num_full_pixels, len(pixel_sequence))
 
-            for channel in range(channels):
-                if bit_idx >= max_bits:
-                    break
+        # Vectorized extraction for complete pixels
+        if num_full_pixels > 0:
+            selected_pixels = pixel_sequence[:num_full_pixels]
+            # Extract LSB from all channels at once - fully vectorized
+            extracted_matrix = pixels_flat[selected_pixels] & 1
+            extracted = extracted_matrix.flatten().astype(np.uint8)
+        else:
+            extracted = np.array([], dtype=np.uint8)
 
-                # Direct bit extraction - optimized for speed
-                pixel_value = pixels_flat[seq_idx, channel]
-                extracted_bit = pixel_value & 1
-                extracted_bits[bit_idx] = extracted_bit
-                bit_idx += 1
+        # Handle remaining bits for partial pixel
+        if remainder_bits > 0 and num_full_pixels < len(pixel_sequence):
+            last_pixel_idx = pixel_sequence[num_full_pixels]
+            extra_bits = (pixels_flat[last_pixel_idx, :remainder_bits] & 1).astype(np.uint8)
+            extracted = np.concatenate([extracted, extra_bits])
 
-            if bit_idx >= max_bits:
-                break
-
-        return extracted_bits[:bit_idx]
+        return extracted[:num_bits]
 
 
     def bits_to_bytes_vectorized(self, bits: np.ndarray) -> np.ndarray:
@@ -198,7 +190,7 @@ class GPUAccelerator:
 
     def bytes_to_bits_vectorized(self, data: Union[bytes, np.ndarray]) -> np.ndarray:
         """
-        Convert bytes to array of bits using fast operations.
+        Convert bytes to array of bits using fully vectorized operations.
 
         Args:
             data: Bytes or numpy array to convert
@@ -210,11 +202,12 @@ class GPUAccelerator:
             data = np.frombuffer(data, dtype=np.uint8)
 
         data = np.asarray(data, dtype=np.uint8)
-        bits = np.zeros(len(data) * 8, dtype=np.uint8)
 
-        # Fast bit unpacking
-        for i in range(8):
-            bits[i::8] = (data >> (7 - i)) & 1
+        # Fully vectorized bit unpacking using broadcasting
+        # Create shift amounts for all 8 bits: [7, 6, 5, 4, 3, 2, 1, 0]
+        shifts = np.arange(7, -1, -1, dtype=np.uint8)
+        # Broadcast: (N, 1) >> (8,) -> (N, 8), then & 1
+        bits = ((data[:, np.newaxis] >> shifts) & 1).flatten().astype(np.uint8)
 
         return bits
 
